@@ -5,6 +5,12 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        demo {
+        }
+        full {
+        }
+    }
     compileSdk 32
 
     defaultConfig {
@@ -15,12 +21,37 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            debuggable true
+        }
+        qa {
+            minifyEnabled true
+            debuggable false
+        }
+        release {
+            minifyEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+            manifestPlaceholders = [appLabel: "DemoApp"]
+        }
+        full {
+            dimension "version"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+            manifestPlaceholders = [appLabel: "FullApp"]
         }
     }
     compileOptions {
